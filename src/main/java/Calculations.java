@@ -38,12 +38,16 @@ public class Calculations {
 
     public double CalcLagranj(double[] steps, double[] yx, int lagranj, double value) {
         double answer = 0.0;
+        double temp;
         for (int i = 0; i < lagranj; i++) {
+            temp = 1;
             for (int j = 0; j < lagranj; j++) {
                 if (i != j) {
-                    answer += yx[i] * ((value - steps[j]) / (steps[i] - steps[j]));
+                    temp *= ((value - steps[j]) / (steps[i] - steps[j]));
                 }
             }
+            temp *= yx[i];
+            answer += temp;
         }
         return answer;
     }
@@ -52,5 +56,9 @@ public class Calculations {
         double answer = 0.0;
 
         return answer;
+    }
+
+    private double[] CalcTable(double[] table) {
+        return table;
     }
 }
