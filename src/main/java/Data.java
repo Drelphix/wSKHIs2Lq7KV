@@ -10,6 +10,7 @@ public class Data {
     double[] points = {0.71, 1.54, 3.01};
     double[] steps;
     double[] yx;
+    double[] arrLagranj = new double[points.length];
 
     public Data() {
        /* Scanner in = new Scanner(System.in);
