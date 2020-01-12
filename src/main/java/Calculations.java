@@ -56,26 +56,46 @@ public class Calculations {
         double output = steps[0];
         double[][] f;
         double temp;
-        f = CalcTable(steps, yx, newton);
+        double tempo = 1;
+        double[] tetete = GetGap(point, steps, newton + 1);
+        f = CalcTable(tetete, yx, newton);
         for (int i = 0; i < newton; i++) {
             temp = 1;
-            for (int j = 0; j < i; j++) {
+            for (int j = 0; j <= i; j++) {
                 temp *= (point - steps[j]);
             }
-            output *= f[i][0] * temp;
+            tempo = temp * f[i][0];
+            output += tempo;
         }
         return output;
     }
 
     private double[][] CalcTable(double[] steps, double[] yx, int newton) {
-        double[][] table = new double[newton][newton];
-        for (int i = 0; i < table.length; i++) {
+        double[][] table = new double[steps.length][steps.length];
+        for (int i = 0; i < steps.length - 1; i++) {
             table[0][i] = (yx[i + 1] - yx[i]) / (steps[i + 1] - steps[i]);
+            System.out.print("\n table" + "0," + i + " " + table[0][i]);
         }
-        for (int i = 1; i < table.length; i++) {
-            for (int j = 0; j < table.length - i; j++) {
-                table[i][j] = ((table[i - 1][j + 1] - table[i - 1][j]) / (steps[j + 1] - steps[j]));
+        int k = 0;
+
+        for (int i = 1; i < steps.length - 1; i++) {
+            int f = 0;
+            k = i;
+            for (int j = i + 1; j <= steps.length - i; j++) {
+                if (j < steps.length - i - 1) {
+                    table[i][j] = ((table[i - 1][j] - table[i - 1][j - 1]) / (steps[k] - steps[i - 1]));
+                } else {
+                    table[i][j] = ((table[i - 1][j] - table[i - 1][j - 1]) / (steps[k + 1] - steps[f]));
+                    f++;
+                    System.out.print("\nСтрока " + (i - 1) + " Столбец " + j + " равна" + table[i - 1][j]);
+                    System.out.print("\nСтрока " + (i - 1) + " Столбец " + (j - 1) + " равна" + table[i - 1][j - 1]);
+                    System.out.print("\nСтрока  равна" + steps[k + 1]);
+                    System.out.print("\nСтрока  равна" + steps[f - 1]);
+                    System.out.print("\nСтрока " + i + " Столбец " + j + " равна" + table[i][j]);
+                    k++;
+                }
             }
+
         }
         return table;
     }
