@@ -54,7 +54,7 @@ public class Calculations {
 
     public double CalcNewton(double[] steps, double[] yx, int newton, double point, double step) {
         double output = steps[0];
-        double[][] f = new double[newton][newton];
+        double[][] f;
         double temp;
         f = CalcTable(steps, yx, newton);
         for (int i = 0; i < newton; i++) {
