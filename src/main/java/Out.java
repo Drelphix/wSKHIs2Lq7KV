@@ -22,6 +22,6 @@ public class Out {
     }
 
     public void OutLagranj(double point, double value) {
-        System.out.print("\n Для точки " + point + " получили " + value);
+        System.out.print("\n Лагранж для точки " + point + " получили " + value);
     }
 }

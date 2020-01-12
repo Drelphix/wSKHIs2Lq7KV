@@ -18,7 +18,7 @@ public class Application {
             }
             data.arrLagranj[i] = new Calculations().CalcLagranj(data.gaps.get(i), data.yx, j, data.lagranj, data.points[i]);
             new Out().OutLagranj(data.points[i], data.arrLagranj[i]);
-            System.out.println("\nНьютон для " + data.points[i] + " = " + new Calculations().CalcNewton(data.steps, data.yx, data.newton, data.points[i], data.step));
+            System.out.println("\n Ньютон для " + data.points[i] + " = " + new Calculations().CalcNewton(data.gaps.get(i), data.yx, data.newton, data.points[i], data.step));
         }
 
     }
