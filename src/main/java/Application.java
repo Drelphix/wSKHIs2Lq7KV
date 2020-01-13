@@ -5,20 +5,19 @@ public class Application {
         data.yx = new Calculations().GetYX(data.steps);
         new Out().DrawFirstTable(data.steps, data.yx);
         for (int i = 0; i < data.points.length; i++) {
-            data.gaps.add(new Calculations().GetGap(data.points[i], data.steps, data.lagranj));
-            new Out().OutGaps(data.gaps.get(i), data.points[i]);
+            data.gapsLag.add(new Calculations().GetGap(data.points[i], data.steps, data.lagranj));
+            new Out().OutGaps(data.gapsLag.get(i), data.points[i], "Лагранж");
         }
         for (int i = 0; i < data.points.length; i++) {
-            int j = 0;
-            for (int k = 0; k < data.steps.length; k++) {
-                if (data.gaps.get(i)[0] == data.steps[k]) {
-                    j = k;
-                    break;
-                }
-            }
-            data.arrLagranj[i] = new Calculations().CalcLagranj(data.gaps.get(i), data.yx, j, data.lagranj, data.points[i]);
-            new Out().OutLagranj(data.points[i], data.arrLagranj[i]);
-            System.out.println("\n Ньютон для " + data.points[i] + " = " + new Calculations().CalcNewton(data.gaps.get(i), data.yx, data.newton, data.points[i], data.step));
+            data.gapsNew.add(new Calculations().GetGap(data.points[i], data.steps, data.newton));
+            new Out().OutGaps(data.gapsNew.get(i), data.points[i], "Ньютон");
+        }
+        for (int i = 0; i < data.points.length; i++) {
+
+            data.arrLagranj[i] = new Calculations().CalcLagranj(data.gapsLag.get(i), data.lagranj, data.points[i]);
+            new Out().OutPower(data.points[i], data.arrLagranj[i], "Лагранж");
+            data.arrNewton[i] = new Calculations().CalcNewton(data.gapsNew.get(i), data.newton, data.points[i], data.step);
+            new Out().OutPower(data.points[i], data.arrNewton[i], "Ньютон");
         }
 
     }

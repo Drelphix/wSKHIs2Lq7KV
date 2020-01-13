@@ -13,15 +13,15 @@ public class Out {
         }
     }
 
-    public void OutGaps(double[] gaps, double point) {
-        System.out.print("\n Возьмем узлы ");
+    public void OutGaps(double[] gaps, double point, String type) {
+        System.out.print("\n Для " + type + " возьмем узлы ");
         for (int i = 0; i < gaps.length; i++) {
             System.out.print("X" + i + " = " + gaps[i] + ", ");
         }
         System.out.print("Для точки " + point);
     }
 
-    public void OutLagranj(double point, double value) {
-        System.out.print("\n Лагранж для точки " + point + " получили " + value);
+    public void OutPower(double point, double value, String type) {
+        System.out.print("\n " + type + " для точки " + point + " получили " + value);
     }
 }

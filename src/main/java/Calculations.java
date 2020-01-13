@@ -22,81 +22,75 @@ public class Calculations {
         return x * x + 4 * Math.sin(x);
     }
 
-    public double[] GetGap(double value, double[] steps, int lagranj) {
-        double[] gap = new double[lagranj + 1];
+    public double[] GetGap(double value, double[] steps, int power) {
+        double[] gap = new double[power + 1];
         for (int i = 0; i < steps.length; i++) {
             if (steps[i] > value) {
-                if (i - lagranj < 0) {
-                    System.arraycopy(steps, 0, gap, 0, lagranj + 1);
+                if (i - power < 0) {
+                    System.arraycopy(steps, 0, gap, 0, power + 1);
                     break;
-                } else System.arraycopy(steps, i - lagranj, gap, 0, lagranj + 1);
+                } else System.arraycopy(steps, i - power, gap, 0, power + 1);
                 break;
             }
         }
         return gap;
     }
 
-    public double CalcLagranj(double[] steps, double[] yx, int start, int lagranj, double value) {
+    public double CalcLagranj(double[] steps, int power, double value) {
         double answer = 0.0;
         double temp;
-        for (int i = 0; i <= lagranj; i++) {
+        for (int i = 0; i <= power; i++) {
             temp = 1;
-            for (int j = 0; j <= lagranj; j++) {
+            for (int j = 0; j <= power; j++) {
                 if (i != j) {
                     temp *= ((value - steps[j]) / (steps[i] - steps[j]));
                 }
             }
-            answer += temp * yx[start];
-            start++;
+            answer += temp * CalcExpression(steps[i]);
         }
         return answer;
     }
 
-    public double CalcNewton(double[] steps, double[] yx, int newton, double point, double step) {
-        double output = steps[0];
-        double[][] f;
-        double temp;
-        double tempo = 1;
-        double[] tetete = GetGap(point, steps, newton + 1);
-        f = CalcTable(tetete, yx, newton);
-        for (int i = 0; i < newton; i++) {
-            temp = 1;
-            for (int j = 0; j <= i; j++) {
-                temp *= (point - steps[j]);
+    public double CalcNewton(double[] steps, int newton, double point, double step) {
+        double[][] mas = new double[newton + 2][newton + 1];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < newton + 1; j++) {
+                if (i == 0)
+                    mas[i][j] = steps[j];
+                else if (i == 1)
+                    mas[i][j] = CalcExpression(steps[j]);
             }
-            tempo = temp * f[i][0];
-            output += tempo;
         }
-        return output;
-    }
-
-    private double[][] CalcTable(double[] steps, double[] yx, int newton) {
-        double[][] table = new double[steps.length][steps.length];
-        for (int i = 0; i < steps.length - 1; i++) {
-            table[0][i] = (yx[i + 1] - yx[i]) / (steps[i + 1] - steps[i]);
-            System.out.print("\n table" + "0," + i + " " + table[0][i]);
-        }
-        int k = 0;
-
-        for (int i = 1; i < steps.length - 1; i++) {
-            int f = 0;
-            k = i;
-            for (int j = i + 1; j <= steps.length - i; j++) {
-                if (j < steps.length - i - 1) {
-                    table[i][j] = ((table[i - 1][j] - table[i - 1][j - 1]) / (steps[k] - steps[i - 1]));
-                } else {
-                    table[i][j] = ((table[i - 1][j] - table[i - 1][j - 1]) / (steps[k + 1] - steps[f]));
-                    f++;
-                    System.out.print("\nСтрока " + (i - 1) + " Столбец " + j + " равна" + table[i - 1][j]);
-                    System.out.print("\nСтрока " + (i - 1) + " Столбец " + (j - 1) + " равна" + table[i - 1][j - 1]);
-                    System.out.print("\nСтрока  равна" + steps[k + 1]);
-                    System.out.print("\nСтрока  равна" + steps[f - 1]);
-                    System.out.print("\nСтрока " + i + " Столбец " + j + " равна" + table[i][j]);
-                    k++;
-                }
+        int m = newton;
+        for (int i = 2; i < newton + 2; i++) {
+            for (int j = 0; j < m; j++) {
+                mas[i][j] = mas[i - 1][j + 1] - mas[i - 1][j];
             }
-
+            m--;
         }
-        return table;
+        double[] dy0 = new double[newton + 1];
+
+        for (int i = 0; i < newton + 1; i++) {
+            dy0[i] = mas[i + 1][0];
+        }
+
+        double res = dy0[0];
+        double[] xn = new double[newton];
+        xn[0] = point - mas[0][0];
+
+        for (int i = 1; i < newton; i++) {
+            double ans = xn[i - 1] * (point - mas[0][i]);
+            xn[i] = ans;
+            ans = 0;
+        }
+
+        int m1 = newton + 1;
+        int fact = 1;
+        for (int i = 1; i < m1; i++) {
+            fact = fact * i;
+            res = res + (dy0[i] * xn[i - 1]) / (fact * Math.pow(step, i));
+        }
+
+        return res;
     }
 }
