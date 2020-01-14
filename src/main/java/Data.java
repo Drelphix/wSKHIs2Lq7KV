@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Data {
     String expression = "x * x + 4 * sin(x)";
@@ -9,11 +10,12 @@ public class Data {
     double step = Math.PI / 5;
     int lagranj = 4;
     int newton = 2;
+    double[] points = {0.71, 1.54, 3.01};
+
     ArrayList<double[]> gapsLag = new ArrayList<double[]>();
     ArrayList<double[]> gapsNew = new ArrayList<double[]>();
     ArrayList<double[]> gapsFLag = new ArrayList<double[]>();
     ArrayList<double[]> gapsFNew = new ArrayList<double[]>();
-    double[] points = {0.71, 1.54, 3.01};
     double[] steps;
     double[] yx;
     double[] arrLagranj = new double[points.length];
@@ -26,15 +28,15 @@ public class Data {
     double[] maxFunctionNew = new double[2];
 
     public Data() {
-       /* Scanner in = new Scanner(System.in);
+       Scanner in = new Scanner(System.in);
         System.out.println("Функция x^2+4*sin(x)");
         System.out.println("Для ввода числа pi, введите pi");
         System.out.println("Введите начало отрезка");
-        this.start = ifPi(in.nextLine());
+        this.start=in.nextDouble();
         System.out.println("Введите конец отрезка");
-        this.end=ifPi(in.nextLine());
+        this.end = in.nextDouble();
         System.out.println("Введите шаг");
-        this.step = Math.PI/5;
+        this.step = in.nextDouble();
         System.out.println("Введите степень многочлена Лангранжа");
         this.lagranj = in.nextInt();
         System.out.println("Введите степень многочлена Ньютона");
@@ -43,13 +45,7 @@ public class Data {
                 "интерполяционных многочленов");
         for (int i = 0; i < 3; i++) {
             this.points[i]=in.nextDouble();
-        }*/
-    }
-
-    public double ifPi(String line) {
-        if (line.toLowerCase().equals("pi")) {
-            return Math.PI;
-        } else return Double.valueOf(line);
+        }
     }
 
 }
