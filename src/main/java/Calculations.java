@@ -141,7 +141,7 @@ public class Calculations {
 
     public double CalcError(int power, double[] maxFunction, double function) {
         double fact = 1;
-        for (int i = 1; i < power + 1; i++) {
+        for (int i = 1; i <= power + 1; i++) {
             fact *= i;
         }
         double answer = function / fact * maxFunction[1];
