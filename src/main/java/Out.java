@@ -14,14 +14,17 @@ public class Out {
     }
 
     public void OutGaps(double[] gaps, double point, String type) {
-        System.out.print("\n Для " + type + " возьмем узлы ");
+        System.out.print("\n Для " + type + " точки " + point + " возьмем узлы ");
         for (int i = 0; i < gaps.length; i++) {
             System.out.print("X" + i + " = " + gaps[i] + ", ");
         }
-        System.out.print("Для точки " + point);
     }
 
     public void OutPower(double point, double value, String type) {
         System.out.print("\n " + type + " для точки " + point + " получили " + value);
+    }
+
+    public void OutString(String input) {
+        System.out.print(input);
     }
 }
