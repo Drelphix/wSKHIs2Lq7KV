@@ -44,11 +44,5 @@ public class Application {
         System.out.print("\n Максимум функции Ньютона в точке " + data.maxFunctionNew[0] + " равен " + data.maxFunctionNew[1]);
         System.out.print("\n Погрешность Лагранжа для точки " + data.maxFunctionLag[0] + " равна " + calc.CalcError(data.lagranj, data.maxFunctionLag, data.functionLag[(int) data.maxFunctionLag[0]]));
         System.out.print("\n Погрешность Ньютона для точки " + data.maxFunctionNew[0] + " равна " + calc.CalcError(data.newton, data.maxFunctionNew, data.functionNew[(int) data.maxFunctionNew[0]]));
-        try {
-            Runtime.getRuntime().exec("cmd /c start https://www.desmos.com/calculator/z2pourxil1");
-            Runtime.getRuntime().exec("cmd /c start https://www.desmos.com/calculator/jfdrzrv3fu");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
