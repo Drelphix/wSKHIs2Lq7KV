@@ -3,7 +3,7 @@ import edu.hws.jcm.data.Parser;
 import edu.hws.jcm.data.Variable;
 import org.mariuszgromada.math.mxparser.Argument;
 public class Calculations {
-    public double[] GetSteps(double start, double end, double step) {
+    public double[] GetSteps(double start, double end, double step) { //Вычисление шагов, X в таблице
         int length = (int) Math.round((end - start) / step);
         double[] steps = new double[length + 1];
         steps[0] = start;
@@ -13,7 +13,7 @@ public class Calculations {
         return steps;
     }
 
-    public double[] GetYX(double[] steps) {
+    public double[] GetYX(double[] steps) { //Вычисление Y по X
         double[] yx = new double[steps.length];
         for (int i = 0; i < steps.length; i++) {
             yx[i] = CalcExpression(steps[i]);
@@ -23,9 +23,9 @@ public class Calculations {
 
     public double CalcExpression(double x) {
         return x * x + 4 * Math.sin(x);
-    }
+    } //Рассчет формулы
 
-    public double[] GetGap(double value, double[] steps, int power) {
+    public double[] GetGap(double value, double[] steps, int power) { //Получение промежутка
         double[] gap = new double[power + 1];
         for (int i = 0; i < steps.length; i++) {
             if (steps[i] > value) {
@@ -39,7 +39,7 @@ public class Calculations {
         return gap;
     }
 
-    public double CalcLagranj(double[] steps, int power, double value) {
+    public double CalcLagranj(double[] steps, int power, double value) { //Рассчет Лагранжа
         double answer = 0.0;
         double temp;
         for (int i = 0; i <= power; i++) {
@@ -54,7 +54,7 @@ public class Calculations {
         return answer;
     }
 
-    public double CalcNewton(double[] steps, int newton, double point, double step) {
+    public double CalcNewton(double[] steps, int newton, double point, double step) { //Рассчет Ньютона
         double[][] mas = new double[newton + 2][newton + 1];
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < newton + 1; j++) {
@@ -93,7 +93,7 @@ public class Calculations {
         return res;
     }
 
-    public String GetDerivative(String input, int power) {
+    public String GetDerivative(String input, int power) { // Рассчет производной выбранной степени
         Variable xVar = new Variable("x");
         Parser parser = new Parser(Parser.STANDARD_FUNCTIONS);
         parser.add(xVar);
@@ -104,7 +104,7 @@ public class Calculations {
         return expr.toString();
     }
 
-    public double[] CalcDifferenceFL(double[] FLagranj, double[] LLagranj) {
+    public double[] CalcDifferenceFL(double[] FLagranj, double[] LLagranj) { //Расчет разницы по модулю
         double[] answer = new double[FLagranj.length];
         for (int i = 0; i < FLagranj.length; i++) {
             answer[i] = Math.abs(LLagranj[i] - FLagranj[i]);
@@ -112,7 +112,7 @@ public class Calculations {
         return answer;
     }
 
-    public double[] CalcFunction(String derivative, double[] points) {
+    public double[] CalcFunction(String derivative, double[] points) { //Расчет функции по производной N степени
         Argument x;
         org.mariuszgromada.math.mxparser.Expression e;
         double[] out = new double[points.length];
@@ -125,7 +125,7 @@ public class Calculations {
         return out;
     }
 
-    public double[] CalcMaxFunction(double[] function) {
+    public double[] CalcMaxFunction(double[] function) { //Поиск максимума функции
         double[] out = new double[2];
         out[1] = function[0];
         double temp;
@@ -139,12 +139,17 @@ public class Calculations {
         return out;
     }
 
-    public double CalcError(int power, double[] maxFunction, double function) {
+
+    public double CalcError(int power, double[] maxFunction, double point,double[] steps) { //Расчет погрешности
         double fact = 1;
+        double step=1;
         for (int i = 1; i <= power + 1; i++) {
             fact *= i;
         }
-        double answer = function / fact * maxFunction[1];
+        for (int i = 0; i < power; i++) {
+            step *=(point-steps[i]);
+        }
+        double answer = Math.abs(maxFunction[1]*step/fact);
         return answer;
     }
 

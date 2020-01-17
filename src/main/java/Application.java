@@ -29,26 +29,31 @@ public class Application {
         out.OutString("\n Оценка погрешности вычисления Лагранжа");
         data.derivativeLag = calc.GetDerivative(data.expression, data.lagranj);
         out.OutString("\n P(t) -> " + data.derivativeLag);
+
         out.OutString("\n Оценка погрешности вычисления Ньютона");
         data.derivativeNew = calc.GetDerivative(data.expression, data.newton);
         out.OutString("\n P(t) -> " + data.derivativeNew);
-        for (int i = 0; i < data.points.length; i++) {
-            out.OutString("\n L(" + i + ") - f(" + i + ") = " + calc.CalcDifferenceFL(data.arrFLagranj, data.arrLagranj)[i]);
-            out.OutString("\n N(" + i + ") - f(" + i + ") = " + calc.CalcDifferenceFL(data.arrFNewton, data.arrNewton)[i]);
-        }
+
         data.functionLag = calc.CalcFunction(data.derivativeLag, data.points);
         data.maxFunctionLag = calc.CalcMaxFunction(data.functionLag);
         data.functionNew = calc.CalcFunction(data.derivativeNew, data.points);
         data.maxFunctionNew = calc.CalcMaxFunction(data.functionNew);
         System.out.print("\n Максимум функции Лагранжа в точке " + data.maxFunctionLag[0] + " равен " + data.maxFunctionLag[1]);
         System.out.print("\n Максимум функции Ньютона в точке " + data.maxFunctionNew[0] + " равен " + data.maxFunctionNew[1]);
-        System.out.print("\n Погрешность Лагранжа для точки " + data.maxFunctionLag[0] + " равна " + calc.CalcError(data.lagranj, data.maxFunctionLag, data.functionLag[(int) data.maxFunctionLag[0]]));
-        System.out.print("\n Погрешность Ньютона для точки " + data.maxFunctionNew[0] + " равна " + calc.CalcError(data.newton, data.maxFunctionNew, data.functionNew[(int) data.maxFunctionNew[0]]));
-        try {
+        for (int i = 0; i < data.points.length ; i++) {
+            System.out.print("\n Погрешность Лагранжа для точки " + data.points[i] + " равна " + calc.CalcError(data.lagranj, data.maxFunctionLag, data.points[i],data.steps));
+            System.out.print("\n Погрешность Ньютона для точки " + data.points[i] + " равна " + calc.CalcError(data.newton, data.maxFunctionNew, data.points[i],data.steps));
+        }
+
+        for (int i = 0; i < data.points.length; i++) {
+            out.OutString("\n L(" + i + ") - f(" + i + ") = " + calc.CalcDifferenceFL(data.arrFLagranj, data.arrLagranj)[i]);
+            out.OutString("\n N(" + i + ") - f(" + i + ") = " + calc.CalcDifferenceFL(data.arrFNewton, data.arrNewton)[i]);
+        }
+        /*try {
             Runtime.getRuntime().exec("cmd /c start https://www.desmos.com/calculator/z2pourxil1");
             Runtime.getRuntime().exec("cmd /c start https://www.desmos.com/calculator/jfdrzrv3fu");
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
