@@ -10,7 +10,6 @@ public class Calculations {
         steps[0] = start;
         for (int i = 1; i < steps.length; i++) {
             steps[i] = steps[i - 1] + step;
-            //steps[i] = BigDecimal.valueOf(steps[i]).setScale(5,BigDecimal.ROUND_HALF_DOWN).doubleValue();
         }
         return steps;
     }
@@ -19,7 +18,6 @@ public class Calculations {
         double[] yx = new double[steps.length];
         for (int i = 0; i < steps.length; i++) {
             yx[i] = CalcExpression(steps[i]);
-           // yx[i]=BigDecimal.valueOf(yx[i]).setScale(5,BigDecimal.ROUND_HALF_DOWN).doubleValue();
         }
         return yx;
     }
@@ -37,7 +35,6 @@ public class Calculations {
                 }
                 System.arraycopy(steps, i, gap, 0, power + 1);
                 break;
-
             }
         }
         return gap;
@@ -54,18 +51,12 @@ public class Calculations {
                     temp *= 1;
                 } else {
                     calc = ((value - steps[j]) / (steps[i] - steps[j]));
-                    //calc = BigDecimal.valueOf(calc).setScale(5, BigDecimal.ROUND_HALF_DOWN).doubleValue();
-                    //System.out.print("\n"+calc+" = ("+value+" - "+steps[j]+")/("+steps[i]+" - "+steps[j]+")");
                     temp *= calc;
-
                 }
-
             }
             answer += temp * CalcExpression(steps[i]);
-            //answer = BigDecimal.valueOf(CalcExpression(answer)).setScale(64, BigDecimal.ROUND_UNNECESSARY).doubleValue();
-           // System.out.print("\n"+answer+" = ("+temp+" * "+BigDecimal.valueOf(CalcExpression(steps[i])).setScale(5, BigDecimal.ROUND_HALF_DOWN).doubleValue()+")");
         }
-            return answer;
+        return answer;
     }
 
     public double CalcNewton(double[] steps, int newton, double point, double step) { //Рассчет Ньютона
@@ -74,8 +65,7 @@ public class Calculations {
             for (int j = 0; j < newton + 1; j++) {
                 if (i == 0)
                     mas[i][j] = steps[j];
-                else if (i == 1)
-                    mas[i][j] = CalcExpression(steps[j]);
+                else mas[i][j] = CalcExpression(steps[j]);
             }
         }
         int m = newton;
@@ -96,7 +86,6 @@ public class Calculations {
         for (int i = 1; i < newton; i++) {
             double ans = xn[i - 1] * (point - mas[0][i]);
             xn[i] = ans;
-            ans = 0;
         }
         int m1 = newton + 1;
         int fact = 1;
@@ -118,10 +107,8 @@ public class Calculations {
         return expr.toString();
     }
 
-    public double CalcDifferenceFL(double point, double LLagranj) { //Расчет разницы по модулю
-        double answer = Math.abs(CalcExpression(point) - LLagranj);
-
-        return answer;
+    public double CalcDifferenceFL(double point, double smth) { //Расчет разницы по модулю
+        return Math.abs(CalcExpression(point) - smth);
     }
 
     public double CalcFunction(String derivative, double points) { //Расчет функции по производной N степени
@@ -129,38 +116,19 @@ public class Calculations {
         org.mariuszgromada.math.mxparser.Expression e;
         x = new Argument("x = " + points);
         e = new org.mariuszgromada.math.mxparser.Expression(derivative, x);
-        double out = Double.valueOf(String.valueOf(e.calculate()));
-        return out;
+        return Double.valueOf(String.valueOf(e.calculate()));
     }
 
-    public double CalcMaxFunction(double[] function) { //Поиск максимума функции
-        double out;
-        out = function[0];
-        double temp;
-        for (int i = 1; i < function.length; i++) {
-            temp = function[i];
-            if (out <= temp) {
-                out = temp;
-            }
-        }
-        return out;
-    }
-
-
-    public double CalcError(int power, String derivative, double point,double[] steps) { //Расчет погрешности
+    public double CalcError(int power, String derivative, double point, double[] steps) { //Расчет погрешности
         double fact = 1;
         double step = 1;
         for (int i = 1; i <= power + 1; i++) {
             fact *= i;
         }
-        for (int i = 0; i < steps.length; i++) {
-            step *= (point - steps[i]);
+        for (double v : steps) {
+            step *= (point - v);
         }
-        double answer = (Math.abs(CalcFunction(derivative, steps[steps.length - 1]))) * Math.abs(step) / fact;
-        //System.out.print("\n"+Math.abs(CalcFunction(derivative,steps[steps.length-1])));
-        //System.out.print("\n"+steps[steps.length-1]);
-        // System.out.print("\n"+Math.abs(step));
-        return answer;
+        return (Math.abs(CalcFunction(derivative, steps[steps.length - 1]))) * Math.abs(step) / fact;
     }
 
 }
