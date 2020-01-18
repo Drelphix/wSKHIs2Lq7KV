@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Data {
-    String expression = "x*x-4*sin(x)";
+    String expression = "x*x+4*sin(x)";
     String derivativeLag;
     String derivativeNew;
     double start = 0;

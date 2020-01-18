@@ -3,8 +3,6 @@ import edu.hws.jcm.data.Parser;
 import edu.hws.jcm.data.Variable;
 import org.mariuszgromada.math.mxparser.Argument;
 
-import java.math.BigDecimal;
-
 public class Calculations {
     public double[] GetSteps(double start, double end, double step) { //Вычисление шагов, X в таблице
         int length = (int) Math.round((end - start) / step);
@@ -27,18 +25,19 @@ public class Calculations {
     }
 
     public double CalcExpression(double x) {
-        return Math.sin(x);
+        return Math.pow(x, 2) + 4 * Math.sin(x);
     } //Рассчет формулы
 
     public double[] GetGap(double value, double[] steps, int power) { //Получение промежутка
         double[] gap = new double[power + 1];
         for (int i = 0; i < steps.length; i++) {
-            if (steps[i] > value) {
-                if (i - power < 0) {
-                    System.arraycopy(steps, 0, gap, 0, power + 1);
-                    break;
-                } else System.arraycopy(steps, i - power, gap, 0, power + 1);
+            if (steps[i] <= value && steps[i + 1] >= value) {
+                if (i + power >= steps.length) {
+                    i = steps.length - power - 1;
+                }
+                System.arraycopy(steps, i, gap, 0, power + 1);
                 break;
+
             }
         }
         return gap;
@@ -119,25 +118,18 @@ public class Calculations {
         return expr.toString();
     }
 
-    public double[] CalcDifferenceFL(double[] FLagranj, double[] LLagranj) { //Расчет разницы по модулю
-        double[] answer = new double[FLagranj.length];
-        for (int i = 0; i < FLagranj.length; i++) {
-            answer[i] = Math.abs(LLagranj[i] - FLagranj[i]);
+    public double CalcDifferenceFL(double point, double LLagranj) { //Расчет разницы по модулю
+        double answer = Math.abs(CalcExpression(point) - LLagranj);
 
-        }
         return answer;
     }
 
-    public double[] CalcFunction(String derivative, double[] points) { //Расчет функции по производной N степени
+    public double CalcFunction(String derivative, double points) { //Расчет функции по производной N степени
         Argument x;
         org.mariuszgromada.math.mxparser.Expression e;
-        double[] out = new double[points.length];
-        for (int i = 0; i < points.length; i++) {
-            x = new Argument("x = " + points[i]);
-            e = new org.mariuszgromada.math.mxparser.Expression("abs("+derivative+")", x);
-            out[i] = Double.valueOf(String.valueOf(e.calculate()));
-        }
-
+        x = new Argument("x = " + points);
+        e = new org.mariuszgromada.math.mxparser.Expression(derivative, x);
+        double out = Double.valueOf(String.valueOf(e.calculate()));
         return out;
     }
 
@@ -157,14 +149,17 @@ public class Calculations {
 
     public double CalcError(int power, String derivative, double point,double[] steps) { //Расчет погрешности
         double fact = 1;
-        double step=1;
+        double step = 1;
         for (int i = 1; i <= power + 1; i++) {
             fact *= i;
         }
-        for (int i = 0; i <= power; i++) {
-            step *=(point-steps[i]);
+        for (int i = 0; i < steps.length; i++) {
+            step *= (point - steps[i]);
         }
-        double answer = (Math.abs(CalcMaxFunction(CalcFunction(derivative,steps)))*Math.abs(step))/fact;
+        double answer = (Math.abs(CalcFunction(derivative, steps[steps.length - 1]))) * Math.abs(step) / fact;
+        //System.out.print("\n"+Math.abs(CalcFunction(derivative,steps[steps.length-1])));
+        //System.out.print("\n"+steps[steps.length-1]);
+        // System.out.print("\n"+Math.abs(step));
         return answer;
     }
 
