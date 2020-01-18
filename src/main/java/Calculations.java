@@ -44,6 +44,8 @@ public class Calculations {
         double answer = 0.0;
         double temp;
         double calc;
+        double test;
+        System.out.println();
         for (int i = 0; i <= power; i++) {
             temp = 1;
             for (int j = 0; j <= power; j++) {
@@ -52,11 +54,25 @@ public class Calculations {
                 } else {
                     calc = ((value - steps[j]) / (steps[i] - steps[j]));
                     temp *= calc;
+                    System.out.print("(X-" + RoundResult(steps[j], 2) + ")/(" + RoundResult(steps[i], 2) + "-" + RoundResult(steps[j], 2) + ")*");
                 }
             }
-            answer += temp * CalcExpression(steps[i]);
+            test = temp * CalcExpression(steps[i]);
+            answer += test;
+
+            System.out.print(RoundResult(CalcExpression((steps[i])), 2) + "+");
+            // System.out.print(""+test+" + ");
         }
         return answer;
+    }
+
+    double RoundResult(double d, int precise) {
+
+        precise = 10 ^ precise;
+        d = d * precise;
+        int i = (int) Math.round(d);
+        return (double) i / precise;
+
     }
 
     public double CalcNewton(double[] steps, int newton, double point, double step) { //Рассчет Ньютона
