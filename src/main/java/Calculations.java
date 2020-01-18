@@ -2,6 +2,9 @@ import edu.hws.jcm.data.Expression;
 import edu.hws.jcm.data.Parser;
 import edu.hws.jcm.data.Variable;
 import org.mariuszgromada.math.mxparser.Argument;
+
+import java.math.BigDecimal;
+
 public class Calculations {
     public double[] GetSteps(double start, double end, double step) { //Вычисление шагов, X в таблице
         int length = (int) Math.round((end - start) / step);
@@ -9,6 +12,7 @@ public class Calculations {
         steps[0] = start;
         for (int i = 1; i < steps.length; i++) {
             steps[i] = steps[i - 1] + step;
+            //steps[i] = BigDecimal.valueOf(steps[i]).setScale(5,BigDecimal.ROUND_HALF_DOWN).doubleValue();
         }
         return steps;
     }
@@ -17,12 +21,13 @@ public class Calculations {
         double[] yx = new double[steps.length];
         for (int i = 0; i < steps.length; i++) {
             yx[i] = CalcExpression(steps[i]);
+           // yx[i]=BigDecimal.valueOf(yx[i]).setScale(5,BigDecimal.ROUND_HALF_DOWN).doubleValue();
         }
         return yx;
     }
 
     public double CalcExpression(double x) {
-        return x * x + 4 * Math.sin(x);
+        return Math.sin(x);
     } //Рассчет формулы
 
     public double[] GetGap(double value, double[] steps, int power) { //Получение промежутка
@@ -42,16 +47,26 @@ public class Calculations {
     public double CalcLagranj(double[] steps, int power, double value) { //Рассчет Лагранжа
         double answer = 0.0;
         double temp;
+        double calc;
         for (int i = 0; i <= power; i++) {
             temp = 1;
             for (int j = 0; j <= power; j++) {
                 if (i == j) {
                     temp *= 1;
-                } else temp *= ((value - steps[j]) / (steps[i] - steps[j]));
+                } else {
+                    calc = ((value - steps[j]) / (steps[i] - steps[j]));
+                    //calc = BigDecimal.valueOf(calc).setScale(5, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+                    //System.out.print("\n"+calc+" = ("+value+" - "+steps[j]+")/("+steps[i]+" - "+steps[j]+")");
+                    temp *= calc;
+
+                }
+
             }
             answer += temp * CalcExpression(steps[i]);
+            //answer = BigDecimal.valueOf(CalcExpression(answer)).setScale(64, BigDecimal.ROUND_UNNECESSARY).doubleValue();
+           // System.out.print("\n"+answer+" = ("+temp+" * "+BigDecimal.valueOf(CalcExpression(steps[i])).setScale(5, BigDecimal.ROUND_HALF_DOWN).doubleValue()+")");
         }
-        return answer;
+            return answer;
     }
 
     public double CalcNewton(double[] steps, int newton, double point, double step) { //Рассчет Ньютона
@@ -108,6 +123,7 @@ public class Calculations {
         double[] answer = new double[FLagranj.length];
         for (int i = 0; i < FLagranj.length; i++) {
             answer[i] = Math.abs(LLagranj[i] - FLagranj[i]);
+
         }
         return answer;
     }
@@ -118,38 +134,37 @@ public class Calculations {
         double[] out = new double[points.length];
         for (int i = 0; i < points.length; i++) {
             x = new Argument("x = " + points[i]);
-            e = new org.mariuszgromada.math.mxparser.Expression(derivative, x);
+            e = new org.mariuszgromada.math.mxparser.Expression("abs("+derivative+")", x);
             out[i] = Double.valueOf(String.valueOf(e.calculate()));
         }
 
         return out;
     }
 
-    public double[] CalcMaxFunction(double[] function) { //Поиск максимума функции
-        double[] out = new double[2];
-        out[1] = function[0];
+    public double CalcMaxFunction(double[] function) { //Поиск максимума функции
+        double out;
+        out = function[0];
         double temp;
         for (int i = 1; i < function.length; i++) {
             temp = function[i];
-            if (out[1] <= temp) {
-                out[1] = temp;
-                out[0] = i;
+            if (out <= temp) {
+                out = temp;
             }
         }
         return out;
     }
 
 
-    public double CalcError(int power, double[] maxFunction, double point,double[] steps) { //Расчет погрешности
+    public double CalcError(int power, String derivative, double point,double[] steps) { //Расчет погрешности
         double fact = 1;
         double step=1;
         for (int i = 1; i <= power + 1; i++) {
             fact *= i;
         }
-        for (int i = 0; i < power; i++) {
+        for (int i = 0; i <= power; i++) {
             step *=(point-steps[i]);
         }
-        double answer = Math.abs(maxFunction[1]*step/fact);
+        double answer = (Math.abs(CalcMaxFunction(CalcFunction(derivative,steps)))*Math.abs(step))/fact;
         return answer;
     }
 
