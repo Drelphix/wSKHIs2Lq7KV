@@ -1,5 +1,3 @@
-import java.io.IOException;
-
 public class Application {
     public static void main(String[] args) {
         Data data = new Data();
@@ -28,11 +26,10 @@ public class Application {
             System.out.print("\n Погрешность равна " + calc.CalcError(data.newton, data.derivativeNew, data.points[i], data.gapsNew.get(i)));
             System.out.println("\n N(" + i + ") - f(" + i + ") = " + calc.CalcDifferenceFL(data.points[i], data.arrNewton[i]));
         }
-        try {
-            Runtime.getRuntime().exec("cmd /c start https://www.desmos.com/calculator/z2pourxil1");
-            Runtime.getRuntime().exec("cmd /c start https://www.desmos.com/calculator/jfdrzrv3fu");
+       /* try {
+          //  Runtime.getRuntime().exec("cmd /c start http://yotx.ru/#!1/3_h/sH@1v7flJqbf9o/2D/YN9PSq3t74H3oCDwPxC@sbe7f7BPomE3dk4Zj6dbjMety4vd/a39re2dzbPLHfDe@sX2BeIMunMJ3tve2oHuHFyC99Z3thFnUBAIBt5bB21vwRBn@wf7JBp2Y@fsjPG4tXXJeNxC7O5v7W8cQE53YBdbsLOLA8QW4vIMdsrbgSBAZ5e7G1uQnbPT0wvEwekW6OLscguxwzuDXMAuQLsbWxAYDHR5dnZ2ubN1dgFDnF3yEJCLM8TF7sYO5GzrYgcB2trZgSG2YBegMx4McnqKQOxuXEC2QFtnlzunZxdnsEvE5QXvEgI7vTzd3d/ZJ9GwGzunjMfTLcbj1uXF7v7B/j4C");
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

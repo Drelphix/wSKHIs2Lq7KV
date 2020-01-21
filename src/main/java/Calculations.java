@@ -4,6 +4,7 @@ import edu.hws.jcm.data.Variable;
 import org.mariuszgromada.math.mxparser.Argument;
 
 public class Calculations {
+    public String calcul;
     public double[] GetSteps(double start, double end, double step) { //Вычисление шагов, X в таблице
         int length = (int) Math.round((end - start) / step);
         double[] steps = new double[length + 1];
@@ -135,16 +136,35 @@ public class Calculations {
         return Double.valueOf(String.valueOf(e.calculate()));
     }
 
+    public double CalcMaxFunction(double[] function) { //Поиск максимума функции
+        double out;
+        out = function[0];
+        double temp;
+        for (int i = 1; i < function.length; i++) {
+            temp = function[i];
+            if (out <= temp) {
+                out = temp;
+            }
+        }
+        return out;
+    }
+
     public double CalcError(int power, String derivative, double point, double[] steps) { //Расчет погрешности
         double fact = 1;
         double step = 1;
+        double[] function = new double[steps.length];
         for (int i = 1; i <= power + 1; i++) {
             fact *= i;
         }
         for (double v : steps) {
             step *= (point - v);
+
         }
-        return (Math.abs(CalcFunction(derivative, steps[steps.length - 1]))) * Math.abs(step) / fact;
+        for (int i = 0; i < steps.length; i++) {
+            function[i] = Math.abs(CalcFunction(derivative, steps[i]));
+        }
+        System.out.print("\n Максимум функции = " + Math.abs(CalcMaxFunction(function)));
+        return Math.abs(CalcMaxFunction(function)) * Math.abs(step) / fact;
     }
 
 }
