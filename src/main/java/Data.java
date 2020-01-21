@@ -7,10 +7,10 @@ public class Data {
     String derivativeNew;
     double start = 0;
     double end = Math.PI; //3.14159265359
-    double step = Math.PI/5;//0.62831853071
-    int lagranj = 4;
+    double step = Math.PI / 5;//0.62831853071
+    int lagranj = 2;
     int newton = 2;
-    double[] points = {0.71,1.54,3.01};
+    double[] points = {0.71, 2.5, 3.01};
 
     ArrayList<double[]> gapsLag = new ArrayList<double[]>();
     ArrayList<double[]> gapsNew = new ArrayList<double[]>();

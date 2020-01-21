@@ -16,14 +16,14 @@ public class Application {
             out.OutGaps(data.gapsLag.get(i), data.points[i], "Лагранж");
             data.arrLagranj[i] = calc.CalcLagranj(data.gapsLag.get(i), data.lagranj, data.points[i]);
             out.OutPower(data.points[i], data.arrLagranj[i], "Лагранж");
-            System.out.print("\n Погрешность равна " + calc.CalcError(data.lagranj, data.derivativeLag, data.points[i], data.gapsLag.get(i)));
+            System.out.print("\n Погрешность равна " + calc.CalcError(data.lagranj, data.derivativeLag, data.points[i], data.steps));
             System.out.println("\n L(" + i + ") - f(" + i + ") = " + calc.CalcDifferenceFL(data.points[i], data.arrLagranj[i]));
             data.gapsNew.add(calc.GetGap(data.points[i], data.steps, data.newton));
             data.gapsFNew.add(calc.GetGap(data.points[i], data.steps, data.newton));
             out.OutGaps(data.gapsNew.get(i), data.points[i], "Ньютон");
             data.arrNewton[i] = calc.CalcNewton(data.gapsNew.get(i), data.newton, data.points[i], data.step);
             out.OutPower(data.points[i], data.arrNewton[i], "Ньютон");
-            System.out.print("\n Погрешность равна " + calc.CalcError(data.newton, data.derivativeNew, data.points[i], data.gapsNew.get(i)));
+            System.out.print("\n Погрешность равна " + calc.CalcError(data.newton, data.derivativeNew, data.points[i], data.steps));
             System.out.println("\n N(" + i + ") - f(" + i + ") = " + calc.CalcDifferenceFL(data.points[i], data.arrNewton[i]));
         }
        /* try {
