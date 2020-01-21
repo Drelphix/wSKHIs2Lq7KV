@@ -8,25 +8,21 @@ public class Data {
     double start = 0;
     double end = Math.PI; //3.14159265359
     double step = Math.PI / 5;//0.62831853071
-    int lagranj = 2;
+    int lagranj = 4;
     int newton = 2;
-    double[] points = {0.71, 2.5, 3.01};
+    double[] points = {0.71, 1.44, 3.01};
 
     ArrayList<double[]> gapsLag = new ArrayList<double[]>();
     ArrayList<double[]> gapsNew = new ArrayList<double[]>();
     ArrayList<double[]> gapsFLag = new ArrayList<double[]>();
     ArrayList<double[]> gapsFNew = new ArrayList<double[]>();
-    ArrayList<double[]> maxFunctionLag = new ArrayList<double[]>();
-    ArrayList<double[]> maxFunctionNew = new ArrayList<double[]>();
+
 
     double[] steps;
     double[] yx;
     double[] arrLagranj = new double[points.length];
     double[] arrNewton = new double[points.length];
-    double[] arrFLagranj = new double[points.length];
-    double[] arrFNewton = new double[points.length];
-    double[] functionLag = new double[points.length];
-    double[] functionNew = new double[points.length];
+
 
     public Data() {
        Scanner in = new Scanner(System.in);

@@ -4,7 +4,6 @@ import edu.hws.jcm.data.Variable;
 import org.mariuszgromada.math.mxparser.Argument;
 
 public class Calculations {
-    private static final double PHI = (1 + Math.sqrt(5)) / 2;
     public double[] GetSteps(double start, double end, double step) { //Вычисление шагов, X в таблице
         int length = (int) Math.round((end - start) / step);
         double[] steps = new double[length + 1];
@@ -137,19 +136,19 @@ public class Calculations {
     public double getMax(double[] steps, String derivative) {
         double a = 0, res = 0;
         if (derivative.toLowerCase().contains("sin")) {
-            a += steps[0] / Math.PI * Math.PI + Math.PI / 2;
+            a += CalcFunction(derivative, steps[0]) / Math.PI * Math.PI + Math.PI / 2;
         } else if (derivative.toLowerCase().contains("cos")) {
-            a += (steps[0] / Math.PI) * Math.PI;
+            a += (CalcFunction(derivative, steps[0]) / Math.PI) * Math.PI;
         }
         if (a >= steps[0] && a <= steps[steps.length - 1]) {
-            res = 1;
-            System.out.print("\n Точка Максимума входит");
+            System.out.print("\n Максимум входит в промежуток");
+            return 1;
         } else if (a < steps[0] || a > steps[steps.length - 1]) {
             double x0 = Math.abs(CalcFunction(derivative, steps[0]));
             double xn = Math.abs(CalcFunction(derivative, steps[steps.length - 1]));
-            System.out.print("\n Точка Максимума не входит");
-            if (x0 < xn) res = xn;
-            else if (x0 > xn) res = x0;
+            System.out.print("\n Максимум не входит в промежуток");
+            if (x0 < xn) return xn;
+            else if (x0 > xn) return x0;
         }
         return res;
     }
@@ -157,7 +156,6 @@ public class Calculations {
     public double CalcError(int power, String derivative, double point, double[] steps) { //Расчет погрешности
         double fact = 1;
         double step = 1;
-        double[] function = new double[steps.length];
         for (int i = 1; i <= power + 1; i++) {
             fact *= i;
         }
