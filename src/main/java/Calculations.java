@@ -14,17 +14,13 @@ public class Calculations {
         return steps;
     }
 
-    public double[] GetYX(double[] steps) { //Вычисление Y по X
+    public double[] GetYX(double[] steps, String function) { //Вычисление Y по X
         double[] yx = new double[steps.length];
         for (int i = 0; i < steps.length; i++) {
-            yx[i] = CalcExpression(steps[i]);
+            yx[i] = CalcFunction(function, steps[i]);
         }
         return yx;
     }
-
-    public double CalcExpression(double x) {
-        return Math.pow(x, 2) + 4 * Math.sin(x);
-    } //Рассчет формулы
 
     public double[] GetGap(double value, double[] steps, int power) { //Получение промежутка
         double[] gap = new double[power + 1];
@@ -40,7 +36,7 @@ public class Calculations {
         return gap;
     }
 
-    public double CalcLagranj(double[] steps, int power, double value) { //Рассчет Лагранжа
+    public double CalcLagranj(double[] steps, int power, double value, String function) { //Рассчет Лагранжа
         double answer = 0.0;
         double temp;
         double calc;
@@ -57,9 +53,9 @@ public class Calculations {
                     System.out.print("(X-" + RoundResult(steps[j], 2) + ")/(" + RoundResult(steps[i], 2) + "-" + RoundResult(steps[j], 2) + ")*");
                 }
             }
-            test = temp * CalcExpression(steps[i]);
+            test = temp * CalcFunction(function, steps[i]);
             answer += test;
-            System.out.print(RoundResult(CalcExpression((steps[i])), 2) + "+");
+            System.out.print(RoundResult(CalcFunction(function, (steps[i])), 2) + "+");
         }
         return answer;
     }
@@ -73,13 +69,13 @@ public class Calculations {
 
     }
 
-    public double CalcNewton(double[] steps, int newton, double point, double step) { //Рассчет Ньютона
+    public double CalcNewton(double[] steps, int newton, double point, double step, String function) { //Рассчет Ньютона
         double[][] mas = new double[newton + 2][newton + 1];
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < newton + 1; j++) {
                 if (i == 0)
                     mas[i][j] = steps[j];
-                else mas[i][j] = CalcExpression(steps[j]);
+                else mas[i][j] = CalcFunction(function, steps[j]);
             }
         }
         int m = newton;
@@ -121,8 +117,8 @@ public class Calculations {
         return expr.toString();
     }
 
-    public double CalcDifferenceFL(double point, double smth) { //Расчет разницы по модулю
-        return Math.abs(CalcExpression(point) - smth);
+    public double CalcDifferenceFL(double point, double smth, String function) { //Расчет разницы по модулю
+        return Math.abs(CalcFunction(function, point) - smth);
     }
 
     public double CalcFunction(String derivative, double points) { //Расчет функции по производной N степени
@@ -135,26 +131,23 @@ public class Calculations {
 
     public double getMax(double[] steps, String derivative) {
         double a = 0, res = 0;
-        if (derivative.toLowerCase().contains("sin")) { //Находим точку максимума функции.
-            a += Math.round(steps[0] / Math.PI) * Math.PI + Math.PI / 2; //max  sin(x) = 2Pi*n+pi/2
-            System.out.print("\n a " + a);
+        if (derivative.toLowerCase().contains("sin")) { //Находим локальную точку максимума функции.
+            a += Math.round(steps[0] / Math.PI) * Math.PI + Math.PI / 2;
         } else if (derivative.toLowerCase().contains("cos")) {
             if (steps[0] / Math.PI != Math.round(steps[0] / Math.PI)) {
                 a += Math.round(steps[0] / Math.PI) * Math.PI + Math.PI;
             } else a += Math.round(steps[0] / Math.PI) * Math.PI;
         }
         if (a >= steps[0] && a <= steps[steps.length - 1]) { //Попала ли точка максимума в промежуток
-            System.out.print("\n Максимум входит в промежуток" + 1);
+            System.out.print("\n Максимум входит в промежуток");
             return 1;
         } else if (a < steps[0] || a > steps[steps.length - 1]) {
             double x0 = Math.abs(CalcFunction(derivative, steps[0]));
             double xn = Math.abs(CalcFunction(derivative, steps[steps.length - 1]));
             System.out.print("\n Максимум не входит в промежуток");
             if (x0 < xn) {
-                System.out.println("Max " + xn);
                 return xn;
             } else if (x0 > xn) {
-                System.out.println("Max " + x0);
                 return x0;
             }
         }
