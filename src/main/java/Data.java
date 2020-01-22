@@ -6,11 +6,11 @@ public class Data {
     String derivativeLag;
     String derivativeNew;
     double start = 0;
-    double end = Math.PI; //3.14159265359
-    double step = Math.PI / 5;//0.62831853071
-    int lagranj = 4;
+    double end = 10; //3.14159265359
+    double step = 2;//0.62831853071
+    int lagranj = 3;
     int newton = 2;
-    double[] points = {0.71, 1.44, 3.01};
+    double[] points = {5, 6, 9};
 
     ArrayList<double[]> gapsLag = new ArrayList<double[]>();
     ArrayList<double[]> gapsNew = new ArrayList<double[]>();

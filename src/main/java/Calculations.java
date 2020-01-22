@@ -135,20 +135,28 @@ public class Calculations {
 
     public double getMax(double[] steps, String derivative) {
         double a = 0, res = 0;
-        if (derivative.toLowerCase().contains("sin")) {
-            a += CalcFunction(derivative, steps[0]) / Math.PI * Math.PI + Math.PI / 2;
+        if (derivative.toLowerCase().contains("sin")) { //Находим точку максимума функции.
+            a += Math.round(steps[0] / Math.PI) * Math.PI + Math.PI / 2; //max  sin(x) = 2Pi*n+pi/2
+            System.out.print("\n a " + a);
         } else if (derivative.toLowerCase().contains("cos")) {
-            a += (CalcFunction(derivative, steps[0]) / Math.PI) * Math.PI;
+            if (steps[0] / Math.PI != Math.round(steps[0] / Math.PI)) {
+                a += Math.round(steps[0] / Math.PI) * Math.PI + Math.PI;
+            } else a += Math.round(steps[0] / Math.PI) * Math.PI;
         }
-        if (a >= steps[0] && a <= steps[steps.length - 1]) {
-            System.out.print("\n Максимум входит в промежуток");
+        if (a >= steps[0] && a <= steps[steps.length - 1]) { //Попала ли точка максимума в промежуток
+            System.out.print("\n Максимум входит в промежуток" + 1);
             return 1;
         } else if (a < steps[0] || a > steps[steps.length - 1]) {
             double x0 = Math.abs(CalcFunction(derivative, steps[0]));
             double xn = Math.abs(CalcFunction(derivative, steps[steps.length - 1]));
             System.out.print("\n Максимум не входит в промежуток");
-            if (x0 < xn) return xn;
-            else if (x0 > xn) return x0;
+            if (x0 < xn) {
+                System.out.println("Max " + xn);
+                return xn;
+            } else if (x0 > xn) {
+                System.out.println("Max " + x0);
+                return x0;
+            }
         }
         return res;
     }
